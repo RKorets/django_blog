@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{ title }}::{{ block.super }}{% endblock %}
+{% block content %}
+
+        <section class="blog-post-area">
+            <div class="container">
+                <div class="row">
+                    <div class="blog-post-area-style">
+                            <div class="col-md-12">
+                                <div class="single-post-big">
+                                    <div class="big-image">
+                                        {% if posts.first.photo %}
+                                       <img src="{{ posts.first.photo.url }}" alt="">
+                                        {%else%}
+                                    <img src="https://picsum.photos/id/237/300/201" alt="">
+                                        {%endif%}
+                                    </div>
+                                    <div class="big-text">
+                                        <h3><a href="{{ posts.first.get_absolute_url }}">{{ posts.first.title|truncatewords:5 }}</a></h3>
+                                        <p>{{ posts.first.content|truncatewords_html:20|safe }}</p>
+                                        <h4><span class="date">{{ posts.first.created_at }}</span><span class="author">Posted By: <span class="author-name">{{ posts.first.author }}</span></span>
+                                        </h4>
+
+                                    </div>
+                                </div>
+                            </div>
+                        {% for post in posts %}
+                            <div class="col-md-3">
+                                <div class="single-post">
+                                    {% if post.photo %}
+                                    <img src="{{ post.photo.url }}" alt="{{ post.title}}" width="300" height="201">
+                                    {%else%}
+                                    <img src="https://picsum.photos/id/237/300/201" alt="{{ post.title}}">
+                                    {%endif%}
+                                    <h3><a href="{{ post.get_absolute_url }}">{{ post.title|truncatewords:5 }}</a></h3>
+                                    <h4><span>Posted By: <span class="author-name">{{ post.author }}</span></span>
+                                    </h4>
+                                    {{ post.content|truncatewords_html:20|safe }}
+                                    <h4><span>{{ post.created_at }}</span></h4>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                    </div>
+                </div>
+            </div>
+            {% include 'inc/_pagination.html' %}
+            
+        </section>
+
+{% endblock %}
